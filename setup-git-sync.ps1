@@ -13,8 +13,10 @@ Write-Host ""
 # Create pull task (6:00 PM daily)
 Write-Host "Creating task: Git-Pull (runs daily at 18:00)..." -ForegroundColor Yellow
 
+$pwshPath = "C:\Program Files\PowerShell\7\pwsh.exe"
+
 $pullAction = New-ScheduledTaskAction `
-    -Execute "pwsh.exe" `
+    -Execute $pwshPath `
     -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$PullScript`""
 
 $pullTrigger = New-ScheduledTaskTrigger -Daily -At "18:00"
@@ -39,7 +41,7 @@ Write-Host "✓ Task 'Git-Pull' created successfully" -ForegroundColor Green
 Write-Host "Creating task: Git-Push (runs daily at 06:00)..." -ForegroundColor Yellow
 
 $pushAction = New-ScheduledTaskAction `
-    -Execute "pwsh.exe" `
+    -Execute $pwshPath `
     -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$PushScript`""
 
 $pushTrigger = New-ScheduledTaskTrigger -Daily -At "06:00"
