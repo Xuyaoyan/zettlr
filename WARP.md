@@ -37,6 +37,24 @@ Currently minimal structure:
 - `pyproject.toml` - Project configuration and dependencies
 - No subdirectories or modules yet
 
+## Git Sync Automation
+
+### Start the sync daemon
+```pwsh
+.\git-sync.ps1
+```
+
+Automatically syncs with GitHub:
+- **06:00** - Commits and pushes local changes
+- **18:00** - Pulls remote changes
+
+Logs are saved in `logs/` directory.
+
+### Custom times
+```pwsh
+.\git-sync.ps1 -PushTime "08:00" -PullTime "20:00"
+```
+
 ## Development Notes
 
 - Project requires Python >=3.14
