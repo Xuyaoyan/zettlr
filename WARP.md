@@ -4,7 +4,7 @@ This file provides guidance to WARP (warp.dev) when working with code in this re
 
 ## Project Overview
 
-Zettlr is a Python 3.13 project currently in early development. The codebase uses modern Python tooling with uv/pyproject.toml for dependency management.
+Zettlr is a Python 3.14 free-threaded project currently in early development. The codebase uses modern Python tooling with uv/pyproject.toml for dependency management.
 
 ## Development Commands
 
@@ -14,7 +14,7 @@ python main.py
 ```
 
 ### Python Environment
-- Python version: 3.13 (specified in `.python-version`)
+- Python version: 3.14t free-threaded (specified in `.python-version`)
 - Dependencies managed via `pyproject.toml`
 - Virtual environment in `.venv/` (gitignored)
 
@@ -39,7 +39,8 @@ Currently minimal structure:
 
 ## Development Notes
 
-- Project requires Python >=3.13
+- Project requires Python >=3.14
+- Uses free-threaded Python build (3.14t) for improved concurrency
 - No test framework configured yet
 - No linting/formatting tools configured yet
 - No CI/CD configured yet
