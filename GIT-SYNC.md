@@ -1,6 +1,6 @@
-# Git Sync Daemon
+# Git Sync 自动化
 
-自动化 Git 同步守护进程，无需 Windows 计划任务。
+使用 Windows 计划任务自动同步 Git 仓库。
 
 ## 功能
 
@@ -8,56 +8,58 @@
 - ⏰ **下午 6:00** - 从 GitHub 拉取最新更改
 - 📝 完整的日志记录（每日日志文件）
 - 🔄 智能处理冲突（自动 stash）
-- 🎯 单个脚本，持续运行
+- ⚡ 使用 Windows 计划任务，无需后台进程
 
-## 使用方法
+## 快速开始
 
-### 基本使用
+### 1. 设置自动任务（一次性操作）
 ```powershell
-.\git-sync.ps1
+.\setup-git-sync.ps1
 ```
 
-### 自定义时间
+### 2. 验证任务
 ```powershell
-# 自定义推送和拉取时间
-.\git-sync.ps1 -PushTime "08:00" -PullTime "20:00"
+Get-ScheduledTask -TaskName 'Git-*'
 ```
 
-### 自定义仓库路径
+### 3. 手动测试
 ```powershell
-.\git-sync.ps1 -RepoPath "D:\MyRepo"
+# 测试推送
+Start-ScheduledTask -TaskName 'Git-Push'
+
+# 测试拉取
+Start-ScheduledTask -TaskName 'Git-Pull'
 ```
 
-## 后台运行
+## 文件说明
 
-### 方法 1：使用 Start-Process
+- `git-push.ps1` - 推送脚本（提交并推送更改）
+- `git-pull.ps1` - 拉取脚本（从远程拉取更新）
+- `setup-git-sync.ps1` - 设置计划任务
+
+## 管理任务
+
+### 查看任务状态
 ```powershell
-Start-Process pwsh -ArgumentList "-NoExit", "-File", ".\git-sync.ps1" -WindowStyle Minimized
+Get-ScheduledTask -TaskName 'Git-*' | Format-Table
 ```
 
-### 方法 2：使用 nohup（如果安装了 Git Bash）
-```bash
-nohup pwsh -File git-sync.ps1 &
+### 禁用任务
+```powershell
+Disable-ScheduledTask -TaskName 'Git-Push'
+Disable-ScheduledTask -TaskName 'Git-Pull'
 ```
 
-### 方法 3：新窗口运行
+### 启用任务
 ```powershell
-Start-Process pwsh -ArgumentList "-File", "P:\Note\zettlr\git-sync.ps1"
+Enable-ScheduledTask -TaskName 'Git-Push'
+Enable-ScheduledTask -TaskName 'Git-Pull'
 ```
 
-## 开机自启动（可选）
-
-在 PowerShell 配置文件中添加：
-
-1. 打开配置文件：
+### 删除任务
 ```powershell
-notepad $PROFILE
-```
-
-2. 添加以下内容：
-```powershell
-# Auto-start git-sync daemon
-Start-Process pwsh -ArgumentList "-File", "P:\Note\zettlr\git-sync.ps1" -WindowStyle Hidden
+Unregister-ScheduledTask -TaskName 'Git-Push' -Confirm:$false
+Unregister-ScheduledTask -TaskName 'Git-Pull' -Confirm:$false
 ```
 
 ## 日志
@@ -66,16 +68,12 @@ Start-Process pwsh -ArgumentList "-File", "P:\Note\zettlr\git-sync.ps1" -WindowS
 - `logs/push-YYYY-MM-DD.log` - 推送操作日志
 - `logs/pull-YYYY-MM-DD.log` - 拉取操作日志
 
-## 停止守护进程
-
-按 `Ctrl+C` 停止正在运行的守护进程。
-
 ## 工作原理
 
-- 脚本每分钟检查一次当前时间
-- 在指定时间执行相应的 Git 操作
-- 每天只执行一次（通过日期追踪避免重复）
-- 每 10 分钟显示下次执行时间
+- Windows 计划任务在指定时间自动触发脚本
+- `git-push.ps1` 每天 06:00 运行，提交并推送更改
+- `git-pull.ps1` 每天 18:00 运行，拉取远程更新
+- 所有操作记录到日志文件
 
 ## 注意事项
 

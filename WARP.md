@@ -39,21 +39,22 @@ Currently minimal structure:
 
 ## Git Sync Automation
 
-### Start the sync daemon
+### Setup (one-time)
 ```pwsh
-.\git-sync.ps1
+.\setup-git-sync.ps1
 ```
 
-Automatically syncs with GitHub:
-- **06:00** - Commits and pushes local changes
+Creates Windows scheduled tasks:
+- **06:00** - Auto-commits and pushes local changes
 - **18:00** - Pulls remote changes
 
-Logs are saved in `logs/` directory.
-
-### Custom times
+### Manual test
 ```pwsh
-.\git-sync.ps1 -PushTime "08:00" -PullTime "20:00"
+Start-ScheduledTask -TaskName 'Git-Push'
+Start-ScheduledTask -TaskName 'Git-Pull'
 ```
+
+See `GIT-SYNC.md` for more details.
 
 ## Development Notes
 
