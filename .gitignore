@@ -11,3 +11,8 @@ wheels/
 
 # Logs
 logs/
+
+# Git automation scripts
+git-pull.sh
+git-push.sh
+setup-git-sync.sh
